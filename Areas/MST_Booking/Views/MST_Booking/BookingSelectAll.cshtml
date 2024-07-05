@@ -1,0 +1,188 @@
+﻿@using System.Data;
+@model DataTable;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@{
+    var successMessage = TempData["successMessage"]?.ToString();
+    var errorMessage = TempData["errorMessage"]?.ToString();
+}
+
+@if (!string.IsNullOrWhiteSpace(successMessage))
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        @successMessage
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+else if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        @errorMessage
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">X</button>
+    </div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Booking List</h6>
+    </div>
+    <br />
+    <div class="datatable-top">
+        <form class="form-inline mb-2 mb-sm-0" asp-action="BookingSearch" asp-area="MST_Booking" asp-controller="MST_Booking" style="margin-left: 10px;">
+            <input class="form-control mr-2 mb-2 mb-sm-0" type="search" placeholder="Hall Name" name="HallName" aria-label="Search">
+
+            <input class="form-control mr-2 mb-2 mb-sm-0" type="search" placeholder="Customer Name" name="CustomerName" aria-label="Search">
+
+            <!-- Single Search Button -->
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+        </form>
+
+        <br />
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Content of your card goes here -->
+        </div>
+        <div class="col-md-4 text-right pr-3">
+            <a type="button" class="btn btn-primary" asp-action="BookingAddEdit" asp-controller="MST_Booking" asp-area="MST_Booking">
+                <i class="fa fa-plus"></i> Add New
+            </a>
+
+            <a href="@Url.Action("ManageBooking", "MST_Booking")" class="btn btn-info ml-2">
+                Manage Booking
+            </a>
+        </div>
+    </div>
+
+
+<div class="card-body">
+    <div class="table-responsive">
+        <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="col-sm-12">
+                <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+
+                    <thead>
+                        <tr>
+                            <th rowspan="1" colspan="1">BookingID</th>
+                                <th rowspan="1" colspan="1">BookingNo</th>
+                            <th rowspan="1" colspan="1">HallName</th>
+                            <th rowspan="1" colspan="1">Date</th>
+                            <th rowspan="1" colspan="1">FromDate</th>
+                            <th rowspan="1" colspan="1">ToDate</th>
+                            <th rowspan="1" colspan="1">Persons</th>
+                            <th rowspan="1" colspan="1">BookingPurpose</th>
+                            <th rowspan="1" colspan="1">CustomerName</th>
+                            <th rowspan="1" colspan="1">Mobile</th>
+                            <th rowspan="1" colspan="1">Email</th>
+                            <th rowspan="1" colspan="1">Address</th>
+                            <th rowspan="1" colspan="1">IdProofNo</th>
+                            <th rowspan="1" colspan="1">IdProofPhoto</th>
+                                <th rowspan="1" colspan="1">Pending</th>
+                            <th rowspan="1" colspan="1">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (DataRow dr in Model.Rows)
+                        {
+                            <tr>
+                                <td>
+                                    @dr["BookingID"]
+                                </td>
+                                <td>
+                                    @dr["BookingNo"]
+                                </td>
+                                <td>
+                                    @dr["HallName"]
+                                </td>
+                                <td>
+                                    @dr["Date"]
+                                </td>
+                                <td>
+                                    @dr["FromDate"]
+                                </td>
+                                <td>
+                                    @dr["ToDate"]
+                                </td>
+                                <td>
+                                    @dr["Persons"]
+                                </td>
+
+                                <td>
+                                    @dr["BookingPurpose"]
+                                </td>
+                                <td>
+                                    @dr["CustomerName"]
+                                </td>
+                                <td>
+                                    @dr["Mobile"]
+                                </td>
+
+                                <td>
+                                    @dr["Email"]
+                                </td>
+                                <td>
+                                    @dr["Address"]
+                                </td>
+
+                                <td>
+                                    @dr["IdProofNo"]
+                                </td>
+                                    <td>
+                                        <div class="avatar avatar-online">
+                                            <img src="@dr["IdProofPhoto"]" alt="Profile" class="w-px-40 h-auto rounded-circle" style="width: 150px; height: auto;" />
+                                        </div>
+                                    </td>
+                                <td>
+                                    @dr["IsPending"]
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("Add", "MST_Booking", new { BookingID = @dr["BookingID"] })" class="btn btn-primary btn-circle btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="@Url.Action("Delete", "MST_Booking", new { id = @dr["BookingID"] })" class="btn btn-danger btn-circle btn-sm" data-confirm="Are you sure you want to delete this Booking?">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @* <div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="dataTable_previous"><a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="6" tabindex="0" class="page-link">6</a></li><li class="paginate_button page-item next" id="dataTable_next"><a href="#" aria-controls="dataTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a></li></ul></div></div></div> *@
+    </div>
+</div>
+
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('[data-confirm]');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault(); // Prevent the default behavior of the link
+
+                const confirmationMessage = this.getAttribute('data-confirm');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: confirmationMessage,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // If the user confirms, proceed with the deletion
+                        window.location.href = this.getAttribute('href');
+                    }
+                });
+            });
+        });
+    });
+</script>

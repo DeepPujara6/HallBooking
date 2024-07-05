@@ -1,0 +1,181 @@
+﻿@using System.Data;
+@model HallBooking.Models.UserModel;
+@{
+	Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div id="step-2" role="tabpanel" aria-labelledby="steppertrigger2">
+	<div class="vstack gap-4">
+		<!-- Title -->
+		<h4 class="mb-0">Customer Detail</h4>
+
+		<hr class="my-0"> <!-- Divider -->
+		<!-- Alert box START -->
+		<div class="alert alert-warning d-flex" role="alert">
+			<span class="alert-heading h5 mb-0 me-2"><i class="bi bi-exclamation-octagon-fill"></i></span>
+			Please note that when you come to make the payment, you will need to bring the same ID proof that you provided during booking. This is required for verification purposes
+		</div>
+		<!-- Alert box END -->
+		<!-- Traveler 1 form START -->
+		<div class="card border">
+			<!-- Card header -->
+			<div class="card-header border-bottom">
+				<h5 class="mb-0">Fill Your Details</h5>
+			</div>
+
+			<!-- Card body START -->
+			<form method="post" enctype="multipart/form-data" asp-controller="User" asp-action="Save">
+				<input type="hidden" asp-for="HallID" />
+				<div class="card-body">
+					<div class="row g-4">
+						<!-- From Date -->
+						<div class="col-md-6">
+							<div class="form-control-bg-light">
+								<label class="form-label">From Date</label>
+								<input type="date" class="form-control flatpickr" asp-for="FromDate" id="FromDate" onchange="calculateTotalPrice()">
+							</div>
+						</div>
+
+						<!-- To Date -->
+						<div class="col-md-6">
+							<div class="form-control-bg-light">
+								<label class="form-label">To Date</label>
+								<input type="date" class="form-control flatpickr" asp-for="ToDate" id="ToDate" onchange="calculateTotalPrice()">
+							</div>
+						</div>
+
+						<!-- Persons -->
+						<div class="col-md-6">
+							<div class="form-control-bg-light">
+								<label class="form-label">Number of Persons</label>
+								<input type="number" class="form-control" asp-for="Persons">
+							</div>
+						</div>
+
+						<!-- Booking Purpose -->
+						<div class="col-md-6">
+							<div class="form-control-bg-light">
+								<label class="form-label">Booking Purpose</label>
+								<input type="text" class="form-control" asp-for="BookingPurpose">
+							</div>
+						</div>
+
+						<!-- Name -->
+						<div class="col-md-6">
+							<div class="form-control-bg-light">
+								<label class="form-label">Name</label>
+								<input type="text" class="form-control" asp-for="CustomerName">
+							</div>
+						</div>
+
+						<!-- Mobile -->
+						<div class="col-md-6">
+							<div class="form-control-bg-light">
+								<label class="form-label">Mobile</label>
+								<input type="text" class="form-control" asp-for="Mobile">
+							</div>
+						</div>
+
+						<!-- Email -->
+						<div class="col-md-6">
+							<div class="form-control-bg-light">
+								<label class="form-label">Email</label>
+								<input type="email" class="form-control" asp-for="Email">
+							</div>
+						</div>
+
+						<!-- Address -->
+						<div class="col-md-6">
+							<div class="form-control-bg-light">
+								<label class="form-label">Address</label>
+								<input type="text" class="form-control" asp-for="Address">
+							</div>
+						</div>
+
+						<!-- ID Proof Number -->
+						<div class="col-md-6">
+							<div class="form-control-bg-light">
+								<label class="form-label">ID Proof Number</label>
+								<input type="text" class="form-control" asp-for="IdProofNo">
+							</div>
+						</div>
+
+						<!-- ID Proof Photo -->
+						<div class="col-md-6">
+							<div class="form-control-bg-light">
+								<label class="form-label">ID Proof Photo</label>
+								<input type="file" class="form-control" asp-for="File">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<!-- Price Per Day -->
+					<div class="col-md-4">
+						<div class="card border">
+							<div class="card-body">
+								<h6 class="card-title">Price Per Day</h6>
+								<p class="card-text">@ViewBag.PricePerDay</p>
+							</div>
+						</div>
+					</div>
+					<!-- Deposit -->
+					<div class="col-md-4">
+						<div class="card border">
+							<div class="card-body">
+								<h6 class="card-title">Deposit</h6>
+								<p class="card-text">@ViewBag.Deposit</p>
+							</div>
+						</div>
+					</div>
+					<!-- Total Price -->
+					<div class="col-md-4">
+						<div class="card border">
+							<div class="card-body">
+								<h6 class="card-title">Total Price</h6>
+								<p class="card-text">₹<span id="totalPrice">0.00</span></p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Card body END -->
+				<div class="hstack gap-2 flex-wrap justify-content-between mt-4">
+					<a class="btn btn-secondary prev-btn mb-0" asp-action="UserIndex">Previous</a>
+					<button class="btn btn-primary next-btn mb-0">Book Now</button>
+				</div>
+			</form>
+		</div>
+		<br />
+		<!-- Traveler 1 form END -->
+
+		<br />
+
+	</div>	
+</div>
+<!-- Step 2 content END -->
+<script>
+	function calculateTotalPrice() {
+		var fromDate = document.getElementById("FromDate").value;
+		var toDate = document.getElementById("ToDate").value;
+
+		// Convert the date strings to Date objects
+		var fromDateObj = new Date(fromDate);
+		var toDateObj = new Date(toDate);
+
+		// Calculate the difference in days
+		var differenceInTime = toDateObj.getTime() - fromDateObj.getTime();
+		var differenceInDays = differenceInTime / (1000 * 3600 * 24);
+
+		// Calculate the total price
+		var pricePerDay = @ViewBag.PricePerDay; // Use the price per day from ViewBag
+		var totalPrice = differenceInDays * pricePerDay;
+
+		// Format total price as Indian Rupees
+		var formattedTotalPrice = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(totalPrice);
+
+
+		// Display the total price
+		document.getElementById("totalPrice").innerText = totalPrice.toFixed(2);
+	}
+</script>

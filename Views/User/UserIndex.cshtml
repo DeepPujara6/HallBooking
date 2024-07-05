@@ -1,0 +1,140 @@
+﻿@using System.Data;
+@model DataTable;
+@{
+	Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+@{
+	var successMessage = TempData["successMessage"]?.ToString();
+	var errorMessage = TempData["errorMessage"]?.ToString();
+}
+
+@if (!string.IsNullOrWhiteSpace(successMessage))
+{
+	<div class="alert alert-success alert-dismissible" role="alert">
+		@successMessage
+
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+}
+else if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+	<div class="alert alert-danger alert-dismissible" role="alert">
+		@errorMessage
+
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">X</button>
+	</div>
+}
+<main>
+
+	<!-- =======================
+	Main Banner START -->
+	<section class="pt-0">
+		<div class="container position-relative">
+
+			<div class="rounded-3 p-4 p-sm-5" style="position: relative;">
+				<!-- Bg image -->
+				<img src="~/assets/images/category/tour/4by3/hall.jpg" alt="Your Image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
+				<!-- Banner title -->
+				<div class="row justify-content-between pt-0 pb-5">
+					<div class="col-md-7 col-lg-8 col-xxl-7 pb-5 mb-0 mb-lg-5">
+						<h1 class="text-white">Unlock the Perfect Venue for Your Event with Us!</h1>
+						<p class="text-white mb-0">Book, Celebrate, Cherish - Your Hall, Your Memories!</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Search START -->
+			<div class="row mt-n7">
+				<div class="col-8 mx-auto">
+					<!-- Booking form START -->
+					<form method="post" asp-controller="User" asp-action="CorporationSearchUser" class="bg-mode shadow rounded-3 p-4">
+						<div class="row g-4 align-items-center justify-content-center">
+							<div class="col-xl-10">
+								<div class="row g-4 align-items-center justify-content-center">
+									<!-- Location -->
+									<div class="col-md-6 col-lg-4">
+										<label class="h6 fw-normal mb-0"><i class="bi bi-geo-alt text-primary me-1"></i>Location</label>
+										<!-- Input field -->
+										<div class="form-border-bottom form-control-transparent form-fs-lg mt-2">
+											<!-- Replace the select with an input -->
+											<input type="search" class="form-control" name="MCName" placeholder="Enter location">
+										</div>
+									</div>
+
+									<!-- Guest -->
+									<div class="col-md-6 col-lg-4 d-flex justify-content-center">
+										<div class="d-grid">
+											<!-- Use a submit button -->
+											<button type="submit" class="btn btn-lg btn-dark mb-0">Search Corporation</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+
+					<!-- Booking form END -->
+				</div>
+			</div>
+
+			<!-- Search END -->
+		</div>
+	</section>
+</main>
+<!-- =======================
+Main Banner END -->
+
+<!-- =======================Tour grid START -->
+<section class="pt-0">
+	<div class="container">
+		<div class="row g-4">
+			@foreach (DataRow dr in Model.Rows)
+			{
+				<!-- Card item START -->
+				<div class="col-md-4 col-xl-3">
+					<div class="card card-hover-shadow pb-0 h-100">
+						<!-- Overlay item -->
+						<div class="position-relative">
+							<!-- Image -->
+							<img src="@dr["MCLogo"]" class="card-img-top" alt="Card image">
+							<!-- Overlay -->
+
+						</div>
+						<!-- Image -->
+						<!-- Card body START -->
+						<div class="card-body px-2">
+							<!-- Title -->
+							<h5 class="card-title mb-0"><a asp-route-MCID="@Convert.ToInt32(@dr["MCID"])" asp-controller="User" asp-action="HallListUser" class="stretched-link">@dr["MCName"]</a></h5>
+
+
+							<!-- List -->
+							<div class="mt-2 mb-0">
+								<span class="small"><i class="fa-solid fa-location-dot me-1"></i>@dr["MCAddress"]</span><br>
+								<span class="small"><i class="fa-solid fa-user me-2"></i>@dr["ContactPerson"]</span><br>
+								<span class="small"><i class="fa-solid fa-phone me-1"></i>@dr["ContactNo"]</span>
+							</div>
+						</div>
+						<!-- Card body END -->
+						<!-- Card footer START-->
+						<div class="card-footer pt-0">
+							<!-- Price and Button -->
+							<div class="d-sm-flex justify-content-sm-between align-items-center ">
+								<!-- Button -->
+								<div class="mt-2 mt-sm-0">
+									<a asp-route-MCID ="@Convert.ToInt32(@dr["MCID"])" asp-controller="User" asp-action="HallListUser" class="btn btn-sm btn-primary mb-0">View Halls</a>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!-- Card item END -->
+				}
+			<!-- Card item END -->
+
+		</div> <!-- Row END -->
+
+	</div>
+</section>
+<!-- =======================Tour grid END -->

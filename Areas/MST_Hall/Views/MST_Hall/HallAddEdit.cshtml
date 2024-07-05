@@ -1,0 +1,101 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model HallBooking.Areas.MST_Hall.Models.HallModel;
+<form method="post" enctype="multipart/form-data" asp-area="MST_Hall" asp-controller="MST_Hall" asp-action="Save">
+    <input type="hidden" asp-for="HallID" />
+    <a class="btn btn-primary" type="submit" style="float:right" asp-action="HallSelectAll" asp-controller="MST_Hall" asp-area="MST_Hall">Back To List</a>
+
+    <h2>Hall ADD/EDIT</h2>
+    
+    <br />
+
+    <div class="form-group">
+        <label asp-for="MCID" class="form-label">Municipal Corporation</label>
+        <Select type="text" class="custom-select" aria-label="Default select example" asp-for="MCID" asp-items="@(new SelectList(ViewBag.MCList, "MCID", "MCName"))">
+            <option value="">Select the Corporation</option>
+        </Select>
+
+        <span asp-validation-for="MCID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        
+            <label>HallName</label>
+            <input type="text" class="form-control" id="inputHallName" placeholder="Enter Hall Name" asp-for="HallName">
+        <span asp-validation-for="HallName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Capacity</label>
+        <input type="number" class="form-control" id="inputCapacity" placeholder="Enter Capacity" asp-for="Capacity">
+        <span asp-validation-for="Capacity" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Price Per Day</label>
+        <input type="number" class="form-control" id="inputPrice" placeholder="Enter Price" asp-for="PricePerDay">
+        <span asp-validation-for="PricePerDay" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Deposit</label>
+        <input type="number" class="form-control" id="inputDeposit" placeholder="Enter Deposit" asp-for="Deposit">
+        <span asp-validation-for="Deposit" class="text-danger"></span>
+    </div>
+    <div class="form-row">   
+        <div class="form-group col-md-6">
+            <label>LocationURL</label>
+            <input type="text" class="form-control" id="inputLocation" placeholder="Enter Location URL" asp-for="LocationURL">
+            <span asp-validation-for="LocationURL" class="text-danger"></span>
+        </div>
+         <div class="form-group col-md-6">
+            <label for="exampleFormControlSelect1">Select File</label>
+            <input type="file" class="form-control" name="File" />
+            @if (Model != null)
+            {
+                <div class="form-group col-md-4">
+                    <label>@Model.ImageURL</label>
+                </div>
+
+                <div class="avatar avatar-online">
+                    <img src="@Model.ImageURL" alt="Profile"
+                         class="w-px-40 h-auto rounded-circle" />
+                </div>
+            }
+            <span asp-validation-for="ImageURL" class="text-danger"></span>
+        </div> 
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>FloorNo</label>
+            <input type="number" class="form-control" id="inputFloor" placeholder="Enter Floor No" asp-for="FloorNo">
+        </div>
+        <div class="form-group col-md-6">
+            <label>Address</label>
+            <input type="text" class="form-control" id="inputAddress" placeholder="Enter Address" asp-for="Address">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>ContactPerson</label>
+            <input type="text" class="form-control" id="inputContactPerson" placeholder="Enter Name" asp-for="ContactPerson">
+            <span asp-validation-for="ContactPerson" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label>ContactNumber</label>
+            <input type="number" class="form-control" id="inputContactNumber" placeholder="Enter Number" asp-for="ContactNumber">
+            <span asp-validation-for="ContactNumber" class="text-danger"></span>
+        </div>
+    </div>
+    @* <div class="form-group">
+        <label>UserID</label>
+        <input type="number" class="form-control" id="inputUserID" placeholder="Enter User ID" asp-for="UserID">
+    </div> *@
+    <div class="form-group">
+        <label>Hall Description</label>
+        <textarea class="form-control" id="inputHallDescription" rows="5" placeholder="Enter Description" asp-for="HallDescription"></textarea>
+        <span asp-validation-for="HallDescription" class="text-danger"></span>
+    </div>
+    
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-danger" asp-action="HallSelectAll">Cancel</button>
+</form>

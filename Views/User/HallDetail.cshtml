@@ -1,0 +1,273 @@
+﻿@using System.Data;
+@model DataTable;
+@{
+	Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+@foreach (DataRow dr in Model.Rows)
+{
+<!-- =======================
+Main Title START -->
+<section class="py-0 pt-sm-5">
+	<div class="container position-relative">
+		<!-- Title and button START -->
+		
+		<div class="row mb-3">
+			<div class="col-12">
+				<!-- Meta -->
+				<div class="d-lg-flex justify-content-lg-between mb-1">
+					<!-- Title -->
+					<div class="mb-2 mb-lg-0">
+							<h1 class="fs-2">@dr["HallName"] </h1>
+						<!-- Location -->
+							<p class="fw-bold mb-0">
+								<i class="bi bi-geo-alt me-2"></i>@dr["Address"]
+								<a href="@dr["LocationURL"]" target="_blank" class="ms-2 text-decoration-underline">
+									<i class="bi bi-eye-fill me-1"></i>View On Map
+								</a>
+							</p>
+
+					</div>
+
+					<!-- Buttons -->
+					<ul class="list-inline text-end">
+						<!-- Heart icon -->
+						<li class="list-inline-item">
+							<a href="#" class="btn btn-sm btn-light px-2"><i class="fa-solid fa-fw fa-heart"></i></a>
+						</li>
+						<!-- Share icon -->
+						<li class="list-inline-item dropdown">
+							<!-- Share button -->
+							<a href="#" class="btn btn-sm btn-light px-2" role="button" id="dropdownShare" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="fa-solid fa-fw fa-share-alt"></i>
+							</a>
+							<!-- dropdown button -->
+							<ul class="dropdown-menu dropdown-menu-end min-w-auto shadow rounded" aria-labelledby="dropdownShare">
+								<li><a class="dropdown-item" href="#"><i class="fab fa-twitter-square me-2"></i>Twitter</a></li>
+								<li><a class="dropdown-item" href="#"><i class="fab fa-facebook-square me-2"></i>Facebook</a></li>
+								<li><a class="dropdown-item" href="#"><i class="fab fa-linkedin me-2"></i>LinkedIn</a></li>
+								<li><a class="dropdown-item" href="#"><i class="fa-solid fa-copy me-2"></i>Copy link</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- Title and button END -->
+	</div>
+</section>
+<!-- =======================
+Main Title END -->
+<!-- =======================
+
+
+<!-- =======================
+Image gallery START -->
+	<section class="card-grid pt-0">
+		<div class="container">
+			<div class="row justify-content-center">
+				<!-- Image -->
+				<div class="col-md-8 d-flex justify-content-center">
+					<!-- Card item START -->
+					<div class="card card-grid-sm overflow-hidden text-center">
+						<!-- Image -->
+						<div style="position: relative; overflow: hidden; border-radius: 15px;">
+							<img src="@dr["ImageURL"]" class="card-img-top" style="height: 400px; width: 400px; object-fit: cover;" alt="Image">
+							<!-- Overlay -->
+							<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s;">
+								<h5 class="text-light">View Details</h5>
+								<button class="btn btn-primary">View Details</button>
+							</div>
+						</div>
+						<!-- Popup Images -->
+						<a data-glightbox="" data-gallery="gallery" href="@dr["ImageURL"]" class="stretched-link" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></a>
+					</div>
+					<!-- Card item END -->
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+<!-- =======================
+Image gallery END -->
+	<!-- Pricing Details START -->
+	<section class="pt-0">
+		<div class="container">
+			<div class="row g-4 g-xl-5">
+				<!-- Content START -->
+				<div class="col-xl-7 order-1">
+					<div class="vstack gap-5">
+						<!-- Pricing Details -->
+						<div class="card bg-transparent">
+							<div class="card-header border-bottom bg-transparent px-0 pt-0">
+								<h3 class="mb-0">Pricing Details</h3>
+							</div>
+							<div class="card-body pt-4 p-0">
+								<h5 class="fw-light mb-4">Price Details</h5>
+								<!-- Price per day -->
+								<div class="d-flex justify-content-between align-items-center mb-3">
+									<h6 class="fw-light">Price per day:</h6>
+									<p class="mb-0">₹@dr["PricePerDay"]</p>
+								</div>
+								<!-- Deposit price -->
+								<div class="d-flex justify-content-between align-items-center">
+									<h6 class="fw-light">Deposit to book:</h6>
+									<p class="mb-0">₹@dr["Deposit"]</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-12">
+				<form asp-controller="User" asp-action="UserBooking" method="post">
+					<input type="hidden" name="HallID" value="@Convert.ToInt32(@dr["HallID"])">
+					<input type="hidden" name="PricePerDay" value="@dr["PricePerDay"]">
+					<input type="hidden" name="Deposit" value="@dr["Deposit"]">
+					<button type="submit" class="btn btn-primary btn-lg w-100">Book Now</button>
+				</form>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Pricing Details END -->
+	<!-- =======================
+About hotel START -->
+<section class="pt-0">
+	<div class="container" data-sticky-container>
+
+		<div class="row g-4 g-xl-5">
+			<!-- Content START -->
+			<div class="col-xl-7 order-1">
+				<div class="vstack gap-5">
+
+					<!-- About hotel START -->
+					<div class="card bg-transparent">
+						<!-- Card header -->
+						<div class="card-header border-bottom bg-transparent px-0 pt-0">
+							<h3 class="mb-0">About This Hall</h3>
+						</div>
+
+						<!-- Card body START -->
+						<div class="card-body pt-4 p-0">
+							<h5 class="fw-light mb-4">Main Highlights</h5>
+
+							<!-- Highlights Icons -->
+
+								<!-- Highlights Icons -->
+
+								<div class="hstack gap-3 mb-3">
+									<div class="icon-lg bg-light h5 rounded-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Central AC">
+										<i class="fa-solid fa-snowflake"></i>
+									</div>
+									<div class="icon-lg bg-light h5 rounded-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Wheelchair Accessibility">
+										<!-- Font Awesome wheelchair icon -->
+										<i class="fas fa-wheelchair"></i>
+									</div>
+									<div class="icon-lg bg-light h5 rounded-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Parking">
+										<!-- Font Awesome car icon -->
+										<i class="fas fa-car"></i>
+									</div>
+
+								</div>
+
+								<div class="card bg-light">
+									<div class="card-body">
+										<h5 class="card-title">Hall Description</h5>
+										<p class="card-text">@dr["HallDescription"]</p>
+									</div>
+								</div>
+								<br>
+
+							<!-- List -->
+							<h5 class="fw-light mb-2">Advantages</h5>
+							<ul class="list-group list-group-borderless mb-0">
+									<li class="list-group-item h6 fw-light d-flex mb-0">
+										<i class="bi bi-patch-check-fill text-success me-2"></i> @dr["HallName"] offers competitive pricing and flexible booking options, making it an affordable choice for your event.</li>
+									<li class="list-group-item h6 fw-light d-flex mb-0">
+										<i class="bi bi-patch-check-fill text-success me-2"></i>With a capacity of @dr["Capacity"], @dr["HallName"] can accommodate both small and large gatherings.</li>
+
+									<li class="list-group-item h6 fw-light d-flex mb-0"><i class="bi bi-patch-check-fill text-success me-2"></i>The hall complies with all safety regulations and standards, ensuring a safe and secure environment for your event.</li>
+									<li class="list-group-item h6 fw-light d-flex mb-0"><i class="bi bi-patch-check-fill text-success me-2"></i>Ample parking space is available, making it convenient for attendees traveling by car.</li>
+							</ul>
+						</div>
+						<!-- Card body END -->
+					</div>
+					<!-- About hotel START -->
+					<!-- Amenities START -->
+					<div class="card bg-transparent">
+						<!-- Card header -->
+						<div class="card-header border-bottom bg-transparent px-0 pt-0">
+							<h3 class="card-title mb-0">Amenities</h3>
+						</div>
+
+						<!-- Card body START -->
+						<div class="card-body pt-4 p-0">
+							<div class="row g-4">
+								
+								
+								<!-- Payment Method -->
+								<div class="col-sm-6">
+									<h6><i class="fa-solid fa-credit-card me-2"></i>Payment Method</h6>
+									<!-- List -->
+									<ul class="list-group list-group-borderless mt-2 mb-0">
+										<li class="list-group-item pb-0">
+											<i class="fa-solid fa-check-circle text-success me-2"></i>Credit card (Visa, Master card)
+										</li>
+										<li class="list-group-item pb-0">
+											<i class="fa-solid fa-check-circle text-success me-2"></i>Cash
+										</li>
+										<li class="list-group-item pb-0">
+											<i class="fa-solid fa-check-circle text-success me-2"></i>Debit Card
+										</li>
+									</ul>
+								</div>
+
+								<!-- Safety & Security -->
+								<div class="col-sm-6">
+									<h6><i class="fa-solid fa-volume-up me-2"></i>Staff Language</h6>
+									<!-- List -->
+									<ul class="list-group list-group-borderless mt-2 mb-0">
+										<li class="list-group-item pb-0">
+											<i class="fa-solid fa-check-circle text-success me-2"></i>English
+										</li>
+										<li class="list-group-item pb-0">
+											<i class="fa-solid fa-check-circle text-success me-2"></i>Hindi
+										</li>
+											<li class="list-group-item pb-0">
+												<i class="fa-solid fa-check-circle text-success me-2"></i>Gujarati
+											</li>
+									</ul>
+								</div>
+
+									<!-- Contact -->
+									<div class="col-sm-6">
+										<h6><i class="fa-solid fa-phone me-2"></i>Contact</h6>
+										<!-- List -->
+										<ul class="list-group list-group-borderless mt-2 mb-0">
+											<li class="list-group-item pb-0">
+												<i class="fa-solid fa-user me-2"></i><span class="contact">@dr["ContactPerson"]</span>
+											</li>
+											<li class="list-group-item pb-0">
+												<i class="fa-solid fa-phone me-2"></i><span class="contact">@dr["ContactNumber"]</span>
+											</li>
+										</ul>
+									</div>
+
+
+							</div>
+						</div>
+						<!-- Card body END -->
+					</div>
+					<!-- Amenities END -->
+</div>
+</div>
+</div>
+</div>
+</section>
+}

@@ -1,0 +1,65 @@
+﻿@using System.Data;
+@model DataTable;
+@{
+	Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<div class="card border bg-transparent">
+    <!-- Card header -->
+    <div class="card-header bg-transparent border-bottom">
+        <h4 class="card-header-title">My Bookings</h4>
+    </div>
+
+    <!-- Card body START -->
+    <div class="card-body p-0">
+        @foreach (DataRow booking in Model.Rows)
+        {
+            <!-- Card item START -->
+            <div class="card border mb-4">
+                <!-- Card header -->
+                <div class="card-header border-bottom d-md-flex justify-content-md-between align-items-center">
+                    <!-- Icon and Title -->
+                    <div class="d-flex align-items-center">
+                        <div class="icon-lg bg-light rounded-circle flex-shrink-0">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+
+                        <!-- Title -->
+                        <div class="ms-2">
+                            <h6 class="card-title mb-0">@booking["HallName"]</h6>
+                            <ul class="nav nav-divider small">
+                                <li class="nav-item">Booking No: @booking["BookingNo"]</li>
+                                <li class="nav-item">@booking["BookingPurpose"]</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    @* <!-- Button -->
+                    <div class="mt-2 mt-md-0">
+                        <a href="account-bookings.html#" class="btn btn-primary-soft mb-0">Manage Booking</a>
+                    </div> *@
+                </div>
+
+                <!-- Card body -->
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-sm-6 col-md-4">
+                            <span>From Date</span>
+                            <h6 class="mb-0">@booking["FromDate"]</h6>
+                        </div>
+
+                        <div class="col-sm-6 col-md-4">
+                            <span>To Date</span>
+                            <h6 class="mb-0">@booking["ToDate"]</h6>
+                        </div>
+
+                        <div class="col-md-4">
+                            <span>Booked by</span>
+                            <h6 class="mb-0">@booking["CustomerName"]</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card item END -->
+        }
+    </div>
+</div>

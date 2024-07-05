@@ -1,0 +1,148 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model HallBooking.Areas.MST_Booking.Models.BookingModel;
+<form method="post" enctype="multipart/form-data" asp-area="MST_Booking" asp-controller="MST_Booking" asp-action="Save">
+    <input type="hidden" asp-for="BookingID" />
+    <input type="hidden" asp-for="IdProofPhoto" />
+    <a class="btn btn-primary" type="submit" style="float:right" asp-action="BookingSelectAll" asp-controller="MST_Booking" asp-area="MST_Booking">Back To List</a>
+    <h2>Booking ADD/EDIT</h2>
+    <br />
+
+
+    <div class="form-group">
+        <div class="alert alert-info" role="alert">
+            Note: Please select a hall first then check its availability.
+        </div>
+        <label asp-for="HallID" class="form-label">Hall</label>
+        <Select type="text" class="custom-select" aria-label="Default select example" asp-for="HallID" asp-items="@(new SelectList(ViewBag.HallList, "HallID", "HallName"))">
+            <option value="">Select Hall</option>
+        </Select>
+
+        <span asp-validation-for="HallID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+            <label>Date</label>
+        <input type="date" placeholder="Select Date" asp-for="Date" />
+            <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label>Select From Date</label>
+            <input type="date" placeholder="Select From Date" asp-for="FromDate"/>
+        </div>
+    
+        <div class="form-group col-md-4">
+            <label>Select To Date</label>
+            <input type="date" placeholder="Select To Date" asp-for="ToDate" />
+            
+        </div>
+        <div class="form-group col-md-4">
+            <button id="checkAvailabilityBtn" class="btn btn-primary">Check Availability</button>
+        </div>
+    </div>
+    <span asp-validation-for="FromDate" class="text-danger"></span>
+    <br />
+    <span asp-validation-for="ToDate" class="text-danger"></span>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Persons</label>
+            <input type="number" class="form-control" placeholder="Enter Number of persons" asp-for="Persons">
+            <span asp-validation-for="Persons" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label>Booking Purpose</label>
+            <input type="text" class="form-control" asp-for="BookingPurpose">
+            <span asp-validation-for="BookingPurpose" class="text-danger"></span>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label>Customer Name</label>
+        <input type="text" class="form-control" asp-for="CustomerName">
+        <span asp-validation-for="CustomerName" class="text-danger"></span>
+    </div>
+   
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Mobile</label>
+            <input type="number" class="form-control" placeholder="Enter Mobile Number" asp-for="Mobile">
+            <span asp-validation-for="Mobile" class="text-danger"></span>       
+        </div>
+        <div class="form-group col-md-6">
+            <label>Email</label>
+            <input type="text" class="form-control"  placeholder="Enter Email" asp-for="Email">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>IdProofNo</label>
+            <input type="number" class="form-control" placeholder="Enter ID proof no" asp-for="IdProofNo">
+            <span asp-validation-for="IdProofNo" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="exampleFormControlSelect1">Select File</label>
+            <input type="file" class="form-control" asp-for="File" />
+            
+            <span asp-validation-for="IdProofPhoto" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>IsPending</label>
+        <select asp-for="IsPending" class="form-control">
+            
+            <option Value="True">Yes</option>
+            <option Value="False">No</option>
+        </select>
+        <span asp-validation-for="IsPending" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+            
+        <label>Address</label>
+        <textarea class="form-control" placeholder="Enter Address" rows="3" asp-for="Address"></textarea>
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a class="btn btn-danger" asp-action="BookingSelectAll">Cancel</a>
+</form>
+<script>
+    // jQuery is assumed to be available for simplicity
+    $(function () {
+        $('#checkAvailabilityBtn').click(function () {
+            // Get the values of FromDate and ToDate
+            var fromDate = $('#FromDate').val();
+            var toDate = $('#ToDate').val();
+
+            var hallID = $('#HallID').val();
+            // Make sure both fields are filled
+            if (fromDate && toDate) {
+                // Perform AJAX request to the controller
+                $.ajax({
+                    url: '@Url.Action("CheckBookingAvailability", "MST_Booking")',
+                    type: 'POST',
+                    data: { hallID: hallID, fromDate: fromDate, toDate: toDate },
+                    success: function (response) {
+                        // Handle the response from the controller
+                        alert(response);
+                    },
+                    error: function () {
+                        // Handle error
+                        alert('Error occurred while checking availability.');
+                    }
+                });
+            } else {
+                alert('Please fill in both From Date and To Date.');
+            }
+        });
+    });
+
+
+        // Get today's date in the format YYYY-MM-DD
+        const today = new Date().toISOString().split('T')[0];
+
+    // Set the min attribute of the date inputs to today's date
+    document.getElementById('fromDate').min = today;
+</script>

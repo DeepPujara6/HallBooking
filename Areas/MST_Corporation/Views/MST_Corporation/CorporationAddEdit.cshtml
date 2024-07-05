@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model HallBooking.Areas.MST_Corporation.Models.CorporationModel;
+<form method="post" enctype="multipart/form-data" asp-area="MST_Corporation" asp-controller="MST_Corporation" asp-action="Save">
+    <input type="hidden" asp-for="MCID" />
+    <input type="hidden" asp-for="MCLogo" />
+    <a class="btn btn-primary" type="submit" style="float:right" asp-action="CorporationSelectAll" asp-controller="MST_Corporation" asp-area="MST_Corporation">Back To List</a>
+    <h2>Corporation ADD/EDIT</h2>
+    <br />
+    <br />  
+        @* <div class="form-group">
+            <label>UserID</label>
+            <input type="number" class="form-control" id="inputUserID" placeholder="Enter User ID" asp-for="UserID">
+        </div> *@
+        <div class="form-group">
+            <label>MCName</label>
+            <input type="text" class="form-control" id="inputMCName" placeholder="Enter Municipal Corporation Name" asp-for="MCName">
+            <span asp-validation-for="MCName" class="text-danger"></span> 
+        </div>
+    <div class="form-group">
+        <label>MCCity</label>
+        <input type="text" class="form-control" id="inputMCCity" placeholder="Enter City" asp-for="MCCity">
+        <span asp-validation-for="MCCity" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>MCPinCode</label>
+        <input type="number" class="form-control" id="inputPincode" placeholder="Enter Pincode" asp-for="MCPinCode">
+        <span asp-validation-for="MCPinCode" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Select File</label>
+        <input type="file" class="form-control" name="File"/>
+        @if (Model != null)
+        {
+            <div class="form-group col-md-4">
+                <label>@Model.MCLogo</label>
+            </div>
+
+            <div class="avatar avatar-online">
+                <img src="@Model.MCLogo" alt="Profile" class="small-image rounded-circle" />
+            </div>
+
+        }
+        <span asp-validation-for="MCLogo" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>MCEmail</label>
+        <input type="email" class="form-control" id="inputMCEmail" placeholder="Enter Email" asp-for="MCEmail">
+        <span asp-validation-for="MCEmail" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>ContactPerson</label>
+        <input type="text" class="form-control" id="inputContactPerson" placeholder="Enter Contact Person" asp-for="ContactPerson">
+        <span asp-validation-for="ContactPerson" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>ContactNo</label>
+        <input type="text" class="form-control" id="inputContactNo" placeholder="Enter Contact Number" asp-for="ContactNo">
+        <span asp-validation-for="ContactNo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>MCAddress</label>
+        <input type="text" class="form-control" id="inputMCAddress" placeholder="Enter MCAddress" asp-for="MCAddress">
+        <span asp-validation-for="MCAddress" class="text-danger"></span>
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a type="submit" class="btn btn-danger" asp-action="CorporationSelectAll">Cancel</a>
+</form>

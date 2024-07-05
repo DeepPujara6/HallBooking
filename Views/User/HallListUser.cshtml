@@ -1,0 +1,126 @@
+﻿@using System.Data;
+@model DataTable;
+@{
+	Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<section class="pt-0">
+	<div class="container position-relative">
+		
+		<div class="rounded-3 p-4 p-sm-5" style="position: relative;">
+			<!-- Bg image -->
+			<img src="~/assets/images/category/tour/4by3/hall.jpg" alt="Your Image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
+			<!-- Banner title -->
+			<div class="row justify-content-between pt-0 pb-5">
+				<div class="col-md-7 col-lg-8 col-xxl-7 pb-5 mb-0 mb-lg-5">
+					<h1 class="text-white">Unlock the Perfect Venue for Your Event with Us!</h1>
+					<p class="text-white mb-0">Book, Celebrate, Cherish - Your Hall, Your Memories!</p>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Search START -->
+		<div class="row mt-n7">
+			<div class="col-8 mx-auto">
+				<!-- Booking from START -->
+				<form class="bg-mode shadow rounded-3 p-4">
+					<div class="row g-4 align-items-center justify-content-center">
+
+						<div class="col-xl-10">
+							<div class="row g-4 align-items-center">
+								<!-- Location -->
+								<div class="col-md-6 col-lg-4">
+									<label class="h6 fw-normal mb-0"><i class="bi bi-geo-alt text-primary me-1"></i>Location</label>
+									<!-- Input field -->
+									<div class="form-border-bottom form-control-transparent form-fs-lg mt-2">
+										<select class="form-select js-choice" data-search-enabled="true">
+											<option value="">Select location</option>
+											<option>San Jacinto, USA</option>
+											<option>North Dakota, Canada</option>
+											<option>West Virginia, Paris</option>
+										</select>
+									</div>
+								</div>
+
+								<!-- Check in -->
+								<div class="col-md-6 col-lg-4">
+									<label class="h6 fw-normal mb-0"><i class="bi bi-calendar text-primary me-1"></i>Date</label>
+									<!-- Input field -->
+									<div class="form-border-bottom form-control-transparent form-fs-lg mt-2">
+										<input type="text" class="form-control flatpickr py-2" data-date-format="d M Y" placeholder="Choose a date">
+									</div>
+								</div>
+
+								<!-- Guest -->
+								<div class="col-md-6 col-lg-4">
+									<div class="d-grid">
+										<a href="index-tour.html#" class="btn btn-lg btn-dark mb-0">Search Halls</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!-- Booking from END -->
+			</div>
+		</div>
+		<!-- Search END -->
+	</div>
+</section>
+
+<section class="pt-0">
+	<div class="container">
+
+
+
+		<div class="row g-4">
+			@foreach (DataRow dr in Model.Rows)
+			{
+			<!-- Card item START -->
+			<div class="col-md-6 col-xl-4">
+				<div class="card card-hover-shadow pb-0 h-100">
+					<!-- Overlay item -->
+					<div class="position-relative">
+						<!-- Image -->
+							<img src="@dr["ImageURL"]" class="card-img-top" alt="Card image">
+					</div>
+					<!-- Image -->
+					<!-- Card body START -->
+					<div class="card-body px-3">
+						<!-- Title -->
+							<h5 class="card-title mb-0"><a asp-route-HallID="@Convert.ToInt32(@dr["HallID"])" asp-controller="User" asp-action="HallDetail" class="stretched-link">@dr["HallName"]</a></h5>
+
+						<!-- List -->
+						<ul class="nav nav-divider mt-3 mb-0">
+							<li class="nav-item h6 fw-normal mb-0">
+									<i class="bi bi-person-fill text-orange me-2"></i>@dr["Capacity"] capacity
+						</ul>
+					</div>
+					<!-- Card body END -->
+					<!-- Card footer START-->
+					<div class="card-footer pt-0">
+						<!-- Price and Button -->
+						<div class="d-sm-flex justify-content-sm-between align-items-center flex-wrap">
+							<!-- Price -->
+							<div class="hstack gap-2">
+									<h5 class="fw-normal text-success mb-0">@dr["PricePerDay"]</h5>
+								<small>/per day</small>
+							</div>
+							<!-- Button -->
+							<div class="mt-2 mt-sm-0">
+								<a href="HallDetail.cshtml" class="btn btn-sm btn-primary mb-0">View Details</a>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			}
+			
+
+		</div> <!-- Row END -->
+
+
+	</div>
+</section>
